@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/El-Tra-Tra-Tra-Del-Hipopotamo-ogg.ogg-13e2c7d08496b10b6c22ead65950ccd3.oggstr"
+
+[deps]
+
+source_file="res://assets/Level/audio/El-Tra-Tra-Tra-Del-Hipopotamo-ogg.ogg"
+dest_files=[ "res://.import/El-Tra-Tra-Tra-Del-Hipopotamo-ogg.ogg-13e2c7d08496b10b6c22ead65950ccd3.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
