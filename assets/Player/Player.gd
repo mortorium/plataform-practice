@@ -38,6 +38,8 @@ func motion_ctrl():
 	
 	if is_on_floor():
 		can_move = true
+		$RayCast.enabled = false
+		print("raycast desactivado")
 		
 		if get_axis().x != 0:
 			$AnimatedSprite.play("Run")
@@ -56,22 +58,24 @@ func motion_ctrl():
 		else:
 			$AnimatedSprite.play("Fall")
 	
-	if $RayCast.is_colliding():
-		can_move = false
-		
-		var col = $RayCast.get_collider() #variable para guardar las colisiones
-		
-		if col.is_in_group("Wall") and Input.is_action_just_pressed("ui_accept"):
-			motion.y -= JUMP_HEIGHT
+		$RayCast.enabled = true
+		if $RayCast.is_colliding():
+			can_move = false
+			print("raycast activado")
 			
-			if $AnimatedSprite.flip_h:
-				motion.x += BOUNCING_JUMP
-				$AnimatedSprite.flip_h = false
-			else:
-				motion.x -= BOUNCING_JUMP
-				$AnimatedSprite.flip_h = true
+			var col = $RayCast.get_collider() #variable para guardar las colisiones
+			
+			if col.is_in_group("Wall") and Input.is_action_just_pressed("ui_accept"):
+				motion.y -= JUMP_HEIGHT
 				
-				"""el if de aqui arriba es para dar efecto de que reboto en la pared
-				por eso volteamos el sprite"""
+				if $AnimatedSprite.flip_h:
+					motion.x += BOUNCING_JUMP
+					$AnimatedSprite.flip_h = false
+				else:
+					motion.x -= BOUNCING_JUMP
+					$AnimatedSprite.flip_h = true
+					
+					"""el if de aqui arriba es para dar efecto de que reboto en la pared
+					por eso volteamos el sprite"""
 				
 	motion = move_and_slide(motion, FLOOR)
