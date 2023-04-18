@@ -6,8 +6,19 @@ const GRAVITY = 16 #establecemos la fuerza de gravedad
 const JUMP_HEIGHT = 384
 const BOUNCING_JUMP = 112 #fuerza de rebote en la pared
 const CAST_WALL = 10 #distancia de colision contra la pared
+const CAST_ENEMY = 20 #distance de colision contra enemigos
 onready var motion = Vector2.ZERO
 var can_move : bool #es para saber si el Player se puede mover
+
+"""STATE MACHINE"""
+var playback : AnimationNodeStateMachinePlayback
+
+
+func _ready():
+	playback = $AnimationTree.get("parameters/playback") #obtenemos el parametro del playback del
+	#nodo animation tree
+	playback.start("Iddle") #Lo iniciamos en estado Iddle
+	$AnimationTree.active = true #y o
 
 
 func _process(delta):
@@ -24,6 +35,11 @@ func motion_ctrl():
 	motion.y += GRAVITY
 	
 	if can_move:
+		if get_axis().x == 0:
+			playback.travel("Iddle")
+		else:
+			playback.travel("run")
+			
 		if get_axis().x == 1:
 			$RayCast.cast_to.y = CAST_WALL #pa controlar la direccion del raycast
 			$AnimatedSprite.flip_h = false
