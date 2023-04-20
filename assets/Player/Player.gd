@@ -34,64 +34,83 @@ func get_axis() -> Vector2:
 func motion_ctrl():
 	motion.y += GRAVITY
 	
-	if can_move:
+	if can_move: #aqui indicamos que se puede mover solo si can_move devuelve true
+		motion.x = get_axis().x * SPEED
+		
 		if get_axis().x == 0:
 			playback.travel("Iddle")
 		else:
 			playback.travel("run")
-			
+		
+		match playback.get_current_node():
+			"Iddle":
+				motion.x = 0
+				$Particles.emitting = false
+			"run":
+				$Particles.emitting = true
+		
 		if get_axis().x == 1:
-			$RayCast.cast_to.y = CAST_WALL #pa controlar la direccion del raycast
-			$AnimatedSprite.flip_h = false
+#			$RayCast.cast_to.y = CAST_WALL #pa controlar la direccion del raycast
+			$Sprite.flip_h = false
 		elif get_axis().x == -1:
-			$RayCast.cast_to.y = -CAST_WALL #invertimos el raycast
-			$AnimatedSprite.flip_h = true
-		
-		if get_axis().x != 0:
-			motion.x = get_axis().x * SPEED
-		else:
-			motion.x = 0
-	
-	if is_on_floor():
-		can_move = true
-		$RayCast.enabled = false
-		print("raycast desactivado")
-		
-		if get_axis().x != 0:
-			$AnimatedSprite.play("Run")
-			$Particles.emitting = true #esto pa emitir particulas cuando se mueve el Player
-		else:
-			$AnimatedSprite.play("Iddle")
-			$Particles.emitting = false
+#			$RayCast.cast_to.y = -CAST_WALL #invertimos el raycast
+			$Sprite.flip_h = true
 			
-		if Input.is_action_just_pressed("ui_accept"):
-			motion.y -= JUMP_HEIGHT
-	else:
-		$Particles.emitting = false
-		
-		if motion.y < 0:
-			$AnimatedSprite.play("Jump")
-		else:
-			$AnimatedSprite.play("Fall")
-	
-		$RayCast.enabled = true
-		if $RayCast.is_colliding():
-			can_move = false
-			print("raycast activado")
-			
-			var col = $RayCast.get_collider() #variable para guardar las colisiones
-			
-			if col.is_in_group("Wall") and Input.is_action_just_pressed("ui_accept"):
+	motion = move_and_slide(motion, FLOOR)
+
+#con esta funcion mantenemos cierto orden en la direccion de los raycast
+func direction_ctrl():
+	match $Sprite.flip_h:
+		true:
+			$RayCast.cast_to.x = -CAST_WALL
+			$RayAttack.cast_to = -CAST_ENEMY
+		false:
+			$RayCast.cast_to.x = CAST_WALL
+			$RayAttack.cast_to.x = CAST_ENEMY
+
+func jump_ctrl():
+	match is_on_floor():
+		true:
+			can_move = true
+			$RayCast.enabled = false
+			if Input.is_action_just_pressed("ui_accept"):
 				motion.y -= JUMP_HEIGHT
-				
-				if $AnimatedSprite.flip_h:
-					motion.x += BOUNCING_JUMP
-					$AnimatedSprite.flip_h = false
-				else:
-					motion.x -= BOUNCING_JUMP
-					$AnimatedSprite.flip_h = true
+		false:
+			$Particles.emitting = false
+			$RayCast.enabled = true
+			if motion.y < 0:
+				playback.travel("Jump")
+			else:
+				playback.travel("Fall")
+
+	if is_on_floor():
+			
+		
+#	else:
+#		
+#
+#		if motion.y < 0:
+#			$AnimatedSprite.play("Jump")
+#		else:
+#			$AnimatedSprite.play("Fall")
+#
+#		$RayCast.enabled = true
+#		if $RayCast.is_colliding():
+#			can_move = false
+#			print("raycast activado")
+#
+#			var col = $RayCast.get_collider() #variable para guardar las colisiones
+#
+#			if col.is_in_group("Wall") and Input.is_action_just_pressed("ui_accept"):
+#				motion.y -= JUMP_HEIGHT
+#
+#				if $AnimatedSprite.flip_h:
+#					motion.x += BOUNCING_JUMP
+#					$AnimatedSprite.flip_h = false
+#				else:
+#					motion.x -= BOUNCING_JUMP
+#					$AnimatedSprite.flip_h = true
 					
 					"""el if de aqui arriba es para dar efecto de que reboto en la pared
 					por eso volteamos el sprite"""
 				
-	motion = move_and_slide(motion, FLOOR)
