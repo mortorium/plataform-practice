@@ -23,6 +23,9 @@ func _ready():
 
 func _process(delta):
 	motion_ctrl()
+	direction_ctrl()
+	jump_ctrl()
+	attack_ctrl()
 
 
 func get_axis() -> Vector2:
@@ -50,10 +53,8 @@ func motion_ctrl():
 				$Particles.emitting = true
 		
 		if get_axis().x == 1:
-#			$RayCast.cast_to.y = CAST_WALL #pa controlar la direccion del raycast
 			$Sprite.flip_h = false
 		elif get_axis().x == -1:
-#			$RayCast.cast_to.y = -CAST_WALL #invertimos el raycast
 			$Sprite.flip_h = true
 			
 	motion = move_and_slide(motion, FLOOR)
@@ -63,7 +64,7 @@ func direction_ctrl():
 	match $Sprite.flip_h:
 		true:
 			$RayCast.cast_to.x = -CAST_WALL
-			$RayAttack.cast_to = -CAST_ENEMY
+			$RayAttack.cast_to.x = -CAST_ENEMY
 		false:
 			$RayCast.cast_to.x = CAST_WALL
 			$RayAttack.cast_to.x = CAST_ENEMY
@@ -82,35 +83,48 @@ func jump_ctrl():
 				playback.travel("Jump")
 			else:
 				playback.travel("Fall")
-
-	if is_on_floor():
 			
-		
-#	else:
-#		
-#
-#		if motion.y < 0:
-#			$AnimatedSprite.play("Jump")
-#		else:
-#			$AnimatedSprite.play("Fall")
-#
-#		$RayCast.enabled = true
-#		if $RayCast.is_colliding():
-#			can_move = false
-#			print("raycast activado")
-#
-#			var col = $RayCast.get_collider() #variable para guardar las colisiones
-#
-#			if col.is_in_group("Wall") and Input.is_action_just_pressed("ui_accept"):
-#				motion.y -= JUMP_HEIGHT
-#
-#				if $AnimatedSprite.flip_h:
-#					motion.x += BOUNCING_JUMP
-#					$AnimatedSprite.flip_h = false
-#				else:
-#					motion.x -= BOUNCING_JUMP
-#					$AnimatedSprite.flip_h = true
-					
+			if $RayCast.is_colliding():
+				can_move = false
+
+				var col = $RayCast.get_collider() #variable para guardar las colisiones
+
+				if col.is_in_group("Wall") and Input.is_action_just_pressed("ui_accept"):
+					motion.y -= JUMP_HEIGHT
+
+					if $Sprite.flip_h:
+						motion.x += BOUNCING_JUMP
+						$Sprite.flip_h = false
+					else:
+						motion.x -= BOUNCING_JUMP
+						$Sprite.flip_h = true
 					"""el if de aqui arriba es para dar efecto de que reboto en la pared
 					por eso volteamos el sprite"""
 				
+#funcion para controlar los ataques del player
+func attack_ctrl():
+	if is_on_floor():
+		if get_axis().x == 0 and Input.is_action_pressed("attack"):
+			match playback.get_current_node():
+				"Iddle":
+					playback.travel("Attack-1")
+					print("ataque 1")
+				"Attack-1":
+					playback.travel("Attack-2")
+					print("ataque 2")
+				"Attack-2":
+					playback.travel("Attack-3")
+					print("ataque 3")
+	
+	#activar o desactivar RayAttack 
+	if playback.get_current_node() == "Attack-1" or playback.get_current_node() == "Attack-2" or \
+	 playback.get_current_node() == "Attack-3":
+		$RayAttack.enabled = true
+	else:
+		$RayAttack.enabled = false
+	
+	#Funcion temporal pa saber si funciona
+	var col = $RayAttack.get_collider()
+	
+	if $RayAttack.is_colliding() and col.is_in_group("Enemy"):
+		col.queue_free()

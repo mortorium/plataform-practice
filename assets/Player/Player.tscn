@@ -28,8 +28,6 @@
 
 [sub_resource type="Animation" id=3]
 resource_name = "Attack-1"
-length = 0.3
-loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:texture")
 tracks/0/interp = 1
@@ -45,8 +43,6 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=4]
 resource_name = "Attack-2"
-length = 0.3
-loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:texture")
 tracks/0/interp = 1
@@ -62,8 +58,6 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=5]
 resource_name = "Attack-3"
-length = 0.3
-loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:texture")
 tracks/0/interp = 1
@@ -94,8 +88,6 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=7]
 resource_name = "Iddle"
-length = 0.5
-loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:texture")
 tracks/0/interp = 1
@@ -111,7 +103,6 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=8]
 resource_name = "Jump"
-length = 0.4
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:texture")
@@ -217,7 +208,7 @@ states/Jump/position = Vector2( 643.889, 212.333 )
 states/run/node = SubResource( 17 )
 states/run/position = Vector2( 397.667, 340.333 )
 transitions = [ "Iddle", "Jump", SubResource( 18 ), "Jump", "Fall", SubResource( 19 ), "Fall", "Iddle", SubResource( 20 ), "Iddle", "run", SubResource( 21 ), "run", "Iddle", SubResource( 22 ), "Iddle", "Attack-1", SubResource( 23 ), "Attack-1", "Iddle", SubResource( 24 ), "Attack-1", "Attack-2", SubResource( 25 ), "Attack-2", "Iddle", SubResource( 26 ), "Attack-2", "Attack-3", SubResource( 27 ), "Attack-3", "Iddle", SubResource( 28 ) ]
-graph_offset = Vector2( 0, 229.437 )
+graph_offset = Vector2( 0, 376.75 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=30]
 
