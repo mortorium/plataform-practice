@@ -233,6 +233,7 @@ anims/run = SubResource( 10 )
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 29 )
 anim_player = NodePath("../AnimationPlayer")
+active = true
 parameters/playback = SubResource( 30 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

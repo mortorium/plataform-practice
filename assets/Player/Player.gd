@@ -108,13 +108,10 @@ func attack_ctrl():
 			match playback.get_current_node():
 				"Iddle":
 					playback.travel("Attack-1")
-					print("ataque 1")
 				"Attack-1":
 					playback.travel("Attack-2")
-					print("ataque 2")
 				"Attack-2":
 					playback.travel("Attack-3")
-					print("ataque 3")
 	
 	#activar o desactivar RayAttack 
 	if playback.get_current_node() == "Attack-1" or playback.get_current_node() == "Attack-2" or \
