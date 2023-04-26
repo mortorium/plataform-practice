@@ -5,8 +5,8 @@ const FLOOR = Vector2(0, -1) #direccon del suelo
 const GRAVITY = 16 #establecemos la fuerza de gravedad
 const JUMP_HEIGHT = 384
 const BOUNCING_JUMP = 112 #fuerza de rebote en la pared
-#const CAST_WALL = 10 #distancia de colision contra la pared
-#const CAST_ENEMY = 20 #distance de colision contra enemigos
+const CAST_WALL = 10 #distancia de colision contra la pared
+const CAST_ENEMY = 20 #distance de colision contra enemigos
 onready var motion = Vector2.ZERO
 var can_move : bool #es para saber si el Player se puede mover
 
@@ -25,6 +25,7 @@ func _process(delta):
 	motion_ctrl()
 	jump_ctrl()
 	attack_ctrl()
+	direction_ctrl()
 
 
 func get_axis() -> Vector2:
@@ -55,13 +56,15 @@ func motion_ctrl():
 			"run":
 				$Particles.emitting = true
 		
-		#Como pusimos los raycast dentro de un nodo position2D ahora solo tenemos
-		#que voltear dicho nodo
-		match $Sprite.flip_h:
-			true:
-				$Raycasts.scale.x = 1
-			false:
-				$Raycasts.scale.x = -1
+#con esta funcion mantenemos cierto orden en la direccion de los raycast
+func direction_ctrl():
+	match $Sprite.flip_h:
+		true:
+			$Wall.cast_to.x = -CAST_WALL
+			$Hit.cast_to.x = -CAST_ENEMY
+		false:
+			$Wall.cast_to.x = CAST_WALL
+			$Hit.cast_to.x = CAST_ENEMY
 		
 	motion = move_and_slide(motion, FLOOR)
 
@@ -70,20 +73,22 @@ func jump_ctrl():
 	match is_on_floor():
 		true:
 			can_move = true
+			$Wall.enabled = false
 			if Input.is_action_just_pressed("ui_accept"):
 				motion.y -= JUMP_HEIGHT
 		false:
 			$Particles.emitting = false
+			$Wall.enabled = true
 			if motion.y < 0:
 				playback.travel("Jump")
 			else:
 				playback.travel("Fall")
 			
-			if $Raycasts/Wall.is_colliding():
-				var body = $Raycasts/Wall.get_collider() #variable para guardar las colisiones
-				print("wall")
-				if body.is_in_group("Wall"): #comprobamos si esta en el grupo wall
-					print("wall")
+			if $Wall.is_colliding():
+				can_move = false
+				var col = $Wall.get_collider() #variable para guardar las colisiones
+				if col.is_in_group("Wall"): #comprobamos si esta en el grupo wall
+					print("chocar")
 					if Input.is_action_just_pressed("ui_accept"):
 						motion.y -= JUMP_HEIGHT
 
@@ -98,7 +103,6 @@ func jump_ctrl():
 				
 #funcion para controlar los ataques del player
 func attack_ctrl():
-	var body = $Raycasts/Hit.get_collider()
 	
 	if is_on_floor():
 		if get_axis().x == 0 and Input.is_action_pressed("attack"):
@@ -110,6 +114,16 @@ func attack_ctrl():
 				"Attack-2":
 					playback.travel("Attack-3")
 	
-	if $Raycasts/Hit.is_colliding() and body.is_in_group("Enemy"):
-		print("Colisiona con Enemy")
-		body.queue_free()
+	#activar o desactivar RayAttack 
+	if playback.get_current_node() == "Attack-1" or playback.get_current_node() == "Attack-2" or \
+	 playback.get_current_node() == "Attack-3":
+		$Hit.enabled = true
+	else:
+		$Hit.enabled = false
+	
+	#colision del enemigo
+	var body = $Hit.get_collider()
+	
+	if $Hit.is_colliding():
+		if body.is_in_group("Enemy"):
+			body.damage_ctrl()

@@ -194,7 +194,7 @@ animation = "run"
 
 [sub_resource type="AnimationNodeStateMachine" id=29]
 states/Attack-1/node = SubResource( 11 )
-states/Attack-1/position = Vector2( 398.111, 479 )
+states/Attack-1/position = Vector2( 397.519, 477.815 )
 states/Attack-2/node = SubResource( 12 )
 states/Attack-2/position = Vector2( 643, 478.111 )
 states/Attack-3/node = SubResource( 13 )
@@ -208,7 +208,7 @@ states/Jump/position = Vector2( 643.889, 212.333 )
 states/run/node = SubResource( 17 )
 states/run/position = Vector2( 397.667, 340.333 )
 transitions = [ "Iddle", "Jump", SubResource( 18 ), "Jump", "Fall", SubResource( 19 ), "Fall", "Iddle", SubResource( 20 ), "Iddle", "run", SubResource( 21 ), "run", "Iddle", SubResource( 22 ), "Iddle", "Attack-1", SubResource( 23 ), "Attack-1", "Iddle", SubResource( 24 ), "Attack-1", "Attack-2", SubResource( 25 ), "Attack-2", "Iddle", SubResource( 26 ), "Attack-2", "Attack-3", SubResource( 27 ), "Attack-3", "Iddle", SubResource( 28 ) ]
-graph_offset = Vector2( 0, 376.75 )
+graph_offset = Vector2( 0, 298.642 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=30]
 
@@ -256,14 +256,11 @@ scale_amount = 4.0
 scale_amount_random = 0.8
 color = Color( 0.909804, 0.94902, 0.560784, 0.623529 )
 
-[node name="Raycasts" type="Position2D" parent="."]
-
-[node name="Wall" type="RayCast2D" parent="Raycasts"]
+[node name="Wall" type="RayCast2D" parent="."]
 position = Vector2( 0, -2 )
-enabled = true
 cast_to = Vector2( 20, 0 )
 
-[node name="Hit" type="RayCast2D" parent="Raycasts"]
+[node name="Hit" type="RayCast2D" parent="."]
 position = Vector2( 0, 5 )
 enabled = true
 cast_to = Vector2( 27, 0 )
