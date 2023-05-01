@@ -1,0 +1,84 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://assets/Objects/Sprites/Chest-Idle/1.png" type="Texture" id=1]
+[ext_resource path="res://assets/Objects/Sprites/Chest-Unlocked/3.png" type="Texture" id=2]
+[ext_resource path="res://assets/Objects/Sprites/Chest-Unlocked/5.png" type="Texture" id=3]
+[ext_resource path="res://assets/Objects/Sprites/Gold-Coin-Idle/02.png" type="Texture" id=4]
+[ext_resource path="res://assets/Objects/Sprites/Chest-Unlocked/8.png" type="Texture" id=5]
+[ext_resource path="res://assets/Objects/Sprites/Chest-Unlocked/1.png" type="Texture" id=6]
+[ext_resource path="res://assets/Objects/Sprites/Chest-Unlocked/7.png" type="Texture" id=7]
+[ext_resource path="res://assets/Objects/Coin.gd" type="Script" id=8]
+[ext_resource path="res://assets/Objects/Sprites/Chest-Unlocked/4.png" type="Texture" id=9]
+[ext_resource path="res://assets/Objects/Sprites/Chest-Unlocked/6.png" type="Texture" id=10]
+[ext_resource path="res://assets/Objects/Sprites/Chest-Unlocked/2.png" type="Texture" id=11]
+
+[sub_resource type="Animation" id=1]
+resource_name = "Iddle"
+length = 0.1
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ ExtResource( 1 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "Join"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 6 ), ExtResource( 11 ), ExtResource( 2 ), ExtResource( 9 ), ExtResource( 3 ), ExtResource( 10 ), ExtResource( 7 ), ExtResource( 5 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ ExtResource( 4 ) ]
+}
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 16, 12 )
+
+[node name="Chest" type="Area2D"]
+script = ExtResource( 8 )
+type = "chest"
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 4 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Iddle = SubResource( 1 )
+anims/Join = SubResource( 2 )
+anims/RESET = SubResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 4 )
+shape = SubResource( 4 )
+
+[connection signal="body_entered" from="." to="." method="_on_Coin_body_entered"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="animation_started" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_started"]

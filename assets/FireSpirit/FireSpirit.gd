@@ -11,8 +11,9 @@ func _ready():
 
 
 func _process(delta):
-	motion_ctrl()
-	tween_ctrl()
+	if is_instance_valid(player):
+		motion_ctrl()
+		tween_ctrl()
 
 
 func _input(event):
