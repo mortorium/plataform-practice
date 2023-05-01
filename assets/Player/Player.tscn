@@ -28,6 +28,7 @@
 
 [sub_resource type="Animation" id=3]
 resource_name = "Attack-1"
+length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:texture")
 tracks/0/interp = 1
@@ -43,6 +44,8 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=4]
 resource_name = "Attack-2"
+length = 0.3
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:texture")
 tracks/0/interp = 1
@@ -58,6 +61,8 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=5]
 resource_name = "Attack-3"
+length = 0.3
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:texture")
 tracks/0/interp = 1
@@ -73,6 +78,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=6]
 resource_name = "Fall"
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:texture")
 tracks/0/interp = 1
@@ -88,6 +94,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=7]
 resource_name = "Iddle"
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:texture")
 tracks/0/interp = 1
@@ -103,7 +110,6 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=8]
 resource_name = "Jump"
-loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:texture")
 tracks/0/interp = 1

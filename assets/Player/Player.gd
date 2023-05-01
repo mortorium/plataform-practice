@@ -88,7 +88,6 @@ func jump_ctrl():
 				can_move = false
 				var col = $Wall.get_collider() #variable para guardar las colisiones
 				if col.is_in_group("Wall"): #comprobamos si esta en el grupo wall
-					print("chocar")
 					if Input.is_action_just_pressed("ui_accept"):
 						motion.y -= JUMP_HEIGHT
 
@@ -126,4 +125,4 @@ func attack_ctrl():
 	
 	if $Hit.is_colliding():
 		if body.is_in_group("Enemy"):
-			body.damage_ctrl()
+			body.damage_ctrl(3)

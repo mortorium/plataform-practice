@@ -11,6 +11,5 @@ func _process(delta):
 		queue_free()
 
 
-func damage_ctrl():
-	health -= 1
-	print("vida del enemigo: " + str(health))
+func damage_ctrl(damage):
+	health -= damage

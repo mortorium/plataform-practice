@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Shoot.ogg-73e9eb93d91a535b8e4aa6c98c4f9ba1.oggstr"
+
+[deps]
+
+source_file="res://assets/FireSpirit/sounds/Shoot.ogg"
+dest_files=[ "res://.import/Shoot.ogg-73e9eb93d91a535b8e4aa6c98c4f9ba1.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0
